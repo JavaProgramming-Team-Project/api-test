@@ -10,17 +10,13 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class SignUpApi {
+    private final String IP  = "localhost";
     public SignUpApi(Member member) {
-//        JSONObject jsonObject = new JSONObject();
-//        JSONArray jsonArray = new JSONArray();
 
         JSONObject data = new JSONObject();
-//        Map data = new LinkedHashMap();
-//
+
         data.put("memberId", member.getId());
         data.put("memberPassword", member.getPassword());
         data.put("memberName", member.getName());
@@ -28,17 +24,10 @@ public class SignUpApi {
         data.put("memberAge", member.getAge());
 
         String jsonType = JSONValue.toJSONString(data);
-
-        /*String jsonType = "{\"memberId\" : \"" + member.getId()+"\", "
-                + "\"memberPassword\" : \"" + member.getPassword()+"\", "
-                + "\"memberName\" : \"" + member.getName()+"\", "
-                + "\"memberPhone\" : \"" + member.getPhone()+"\", "
-                +"\"memberAge\" : " + member.getAge()+"}";*/
-
         System.out.println(jsonType);
 
         try {
-            String hostUrl = "http://localhost:8080/member/signup";
+            String hostUrl = "http://"+IP+":8080/member/signup";
             HttpURLConnection conn = null;
 
             URL url = new URL(hostUrl);
@@ -53,19 +42,6 @@ public class SignUpApi {
             OutputStream os = conn.getOutputStream();
             os.write(jsonType.getBytes(StandardCharsets.UTF_8));
             os.flush();
-
-            /*OutputStream outputStream = conn.getOutputStream();
-            byte[] input = jsonType.getBytes("utf-8");
-            outputStream.write(input, 0, input.length);
-            outputStream.flush();
-            outputStream.close();*/
-
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            /*bw.write(jsonType);
-            bw.flush();
-            bw.close();*/
-//            outputStream.write(jsonType.getBytes("utf-8"));
-//            outputStream.close();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String returnMsg = br.readLine();
@@ -90,10 +66,4 @@ public class SignUpApi {
             throw new RuntimeException(e);
         }
     }
-
-    /*public static void main(String[] args) {
-        Member member = new Member(1L, "jcwsdfefasdv", "jcw1234", "지찬우", "010-9517-1530", 23);
-
-        new SignUpApi(member);
-    }*/
 }
