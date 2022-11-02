@@ -1,6 +1,7 @@
 package api;
 
 import entity.Member;
+import ip.IpConfig;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -12,7 +13,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class SignUpApi {
-    private final String IP  = "localhost";
+    private final String IP  = IpConfig.getIp();
+    private final String PORT = IpConfig.getPort();
+
     public SignUpApi(Member member) {
 
         JSONObject data = new JSONObject();
@@ -27,7 +30,7 @@ public class SignUpApi {
         System.out.println(jsonType);
 
         try {
-            String hostUrl = "http://"+IP+":8080/member/signup";
+            String hostUrl = "http://"+IP+":"+PORT+"/member/signup";
             HttpURLConnection conn = null;
 
             URL url = new URL(hostUrl);
