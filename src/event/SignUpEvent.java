@@ -2,6 +2,7 @@ package event;
 
 import api.SignUpApi;
 import entity.Member;
+import ui.MainHomeGui;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,18 +16,30 @@ public class SignUpEvent implements ActionListener {
     JTextField phoneField;
     JTextField ageField;
 
-    public SignUpEvent(JTextField id, JTextField password, JTextField name, JTextField phone, JTextField age) {
+    JFrame signUpFrame;
+
+    public SignUpEvent(JTextField id, JTextField password, JTextField name, JTextField phone, JTextField age, JFrame frame) {
         idField = id;
         passwordField = password;
         nameField = name;
         phoneField = phone;
         ageField = age;
+        signUpFrame = frame;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        member = new Member(1L, idField.getText(), passwordField.getText(), nameField.getText(),
-                phoneField.getText(), Integer.parseInt(ageField.getText()));
-        new SignUpApi(member);
+        if(idField.getText().isBlank() || passwordField.getText().isBlank() || nameField.getText().isBlank()
+        || phoneField.getText().isBlank() || ageField.getText().isBlank()){
+            System.out.println("모든 항목을 입력하세요!");
+        }
+        else {
+            member = new Member(1L, idField.getText(), passwordField.getText(), nameField.getText(),
+                    phoneField.getText(), Integer.parseInt(ageField.getText()));
+            new SignUpApi(member);
+
+            signUpFrame.setVisible(false);
+            new MainHomeGui();
+        }
     }
 }

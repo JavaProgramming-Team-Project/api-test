@@ -4,12 +4,11 @@ import event.SignUpEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
-public class MainGui extends JFrame {
+public class SignUpGui extends JFrame {
     private Container ct;
 
-    public MainGui() {
+    public SignUpGui() {
         ct = getContentPane();
 
         JPanel idPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -60,7 +59,7 @@ public class MainGui extends JFrame {
         ct.add(buttonPanel);
 
         signUpBtn.addActionListener(new SignUpEvent(idField, passwordField, nameField,
-                phoneField, ageField));
+                phoneField, ageField, this));
 
         setVisible(true);
         setSize(300, 500);
@@ -70,6 +69,6 @@ public class MainGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        new MainGui();
+        new SignUpGui();
     }
 }
