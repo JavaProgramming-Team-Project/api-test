@@ -108,10 +108,8 @@ public class MemberApi {
 
             if (result instanceof JSONObject) {
                 JSONObject data = (JSONObject) result;
-                Member member = new Member(data.get("memberId"), data.get("memberPassword"), data.get("memberName"),
-                         , data.get("memberPhone"), data.get("memberAge"));
-
-                AuthMember auth = new AuthMember(member);
+//                Member member = new Member(data.get("memberId"), data.get("memberPassword"), data.get("memberName"), data.get("memberPhone"), data.get("memberAge"));
+//                AuthMember auth = new AuthMember(member);
             }
 
         } catch (ProtocolException e) {
