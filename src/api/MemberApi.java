@@ -1,5 +1,6 @@
 package api;
 
+import auth.AuthMember;
 import entity.Member;
 import ip.IpConfig;
 import org.json.simple.JSONObject;
@@ -7,19 +8,21 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class SignUpApi {
-    private final String IP  = IpConfig.getIp();
-    private final String PORT = IpConfig.getPort();
+public class MemberApi {
+    private final static String IP  = IpConfig.getIp();
+    private final static String PORT = IpConfig.getPort();
 
-    public SignUpApi(Member member) {
-
+    public static void signUp(Member member) {
         JSONObject data = new JSONObject();
 
         data.put("memberId", member.getId());
@@ -31,21 +34,8 @@ public class SignUpApi {
         String jsonType = JSONValue.toJSONString(data);
         System.out.println(jsonType);
 
-        JSONParser jp = new JSONParser();
-
         try {
-            Object result = jp.parse(jsonType);
-            if (result instanceof JSONObject) {
-                JSONObject test = (JSONObject)result;
-
-                System.out.println("name : " + test.get("memberName"));
-            }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            String hostUrl = "http://"+IP+":"+PORT+"/user/signup";
+            String hostUrl = "http://"+IP+":"+PORT+"/member/signup";
             HttpURLConnection conn = null;
 
             URL url = new URL(hostUrl);
@@ -83,5 +73,57 @@ public class SignUpApi {
             System.out.println("IOException");
             throw new RuntimeException(e);
         }
+    }
+
+    public static void login(String id, String password) {
+        try{
+            String hostUrl = "http://"+IP+":"+PORT+"/user/"+id+"?"+"password="+password;
+            System.out.println(hostUrl);
+            HttpURLConnection conn = null;
+
+            URL url = new URL(hostUrl);
+            conn = (HttpURLConnection)url.openConnection();
+
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(3000);
+            conn.setRequestProperty("Accept", "application/json; utf-8");
+
+            int responseCode = conn.getResponseCode();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuffer sb = new StringBuffer();
+            String inputLine;
+
+            while ((inputLine = br.readLine()) != null) {
+                sb.append(inputLine);
+            }
+            br.close();
+
+            String response = sb.toString();
+            System.out.println(response);
+
+            JSONParser jp = new JSONParser();
+
+            Object result = jp.parse(response);
+
+            if (result instanceof JSONObject) {
+                JSONObject data = (JSONObject) result;
+//                Member member = new Member(data.get("memberId"), data.get("memberPassword"), data.get("memberName"), data.get("memberPhone"), data.get("memberAge"));
+//                AuthMember auth = new AuthMember(member);
+            }
+
+        } catch (ProtocolException e) {
+            throw new RuntimeException(e);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        login("jcw1031", "jcw123");
     }
 }

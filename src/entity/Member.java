@@ -1,15 +1,14 @@
 package entity;
 
 public class Member {
-    private Long memberId;
+    private Long memberKey;
     private String id;
     private String password;
     private String name;
     private String phone;
     private int age;
 
-    public Member(Long memberId, String id, String password, String name, String phone, int age) {
-        this.memberId = memberId;
+    public Member(String id, String password, String name, String phone, int age) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -55,5 +54,13 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Long getMemberKey() {
+        return memberKey;
+    }
+
+    public void setMemberKey(Long memberKey) {
+        this.memberKey = memberKey;
     }
 }
