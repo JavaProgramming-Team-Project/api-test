@@ -1,5 +1,6 @@
 package event;
 
+import api.MemberApi;
 import api.SignUpApi;
 import entity.Member;
 import ui.MainHomeGui;
@@ -36,7 +37,7 @@ public class SignUpEvent implements ActionListener {
         else {
             member = new Member(idField.getText(), passwordField.getText(), nameField.getText(),
                     phoneField.getText(), Integer.parseInt(ageField.getText()));
-            new SignUpApi(member);
+            MemberApi.signUp(member);
 
             signUpFrame.setVisible(false);
             new MainHomeGui();
